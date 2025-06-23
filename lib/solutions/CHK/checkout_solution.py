@@ -35,31 +35,37 @@ class CheckoutSolution:
         group_offer_items = [ 'S', 'T', 'X', 'Y', 'Z']
         group_offer_price = 45
         group_offer_count = 3
-        group_counts = []
+
+        basket = Counter(skus)
 
 
 
         if not all(char in prices for char in skus):
             return -1
 
+        #applu free item
+        for trigger, qty, free_item in free_offers:
+            eligible = basket[trigger] //qty
+            basket[free_item] = max(0, basket[free_item] - eligible)
+
 
 
         total = 0
-        counts = Counter(skus)
+        group_counts = []
 
         # group[ discount
-
         for item in group_offer_items:
-            qty = counts.get(item, 0)
-            group_counts.extend([item] *qty)
-            counts[item] = 0
+            group_counts.extend([item] * basket[item])
+
+
 
         group_counts.sort(key=lambda x: prices[x], reverse=True)
 
         while len(group_counts) >= group_offer_count:
             total += group_offer_price
             for _ in range(group_offer_count):
-                group_counts.pop(0)
+                removed = group_counts.pop(0)
+                basket[removed] -= 1
 
         for item in group_counts:
             total += prices[item]
@@ -68,35 +74,24 @@ class CheckoutSolution:
         # for item, qty in counts.items():
         # total += qty * prices[item]
 
-        #apply free item offers
-        for trigger, required, free_item in free_offers:
-            if trigger in counts:
-                free_qty = counts[trigger] // required
-                if free_item in counts:
-                    if trigger == free_item:
-                        counts[free_item] -= free_qty
-                    else:
-                        counts[free_item] = max(0, counts[free_item] - free_qty)
-
 
 
 
         #apply multi buy offers
-        for item, deals in offers.items():
-            if item in counts:
-                qty = counts[item]
-                for deal_qty, deal_price in sorted(deals, reverse=True):
-                    deal_count = qty //deal_qty
-                    total+= deal_count * deal_price
-                    qty %= deal_qty
-                counts[item] = qty
-        # remiaing items
-        for item, qty in counts.items():
-            total += qty * prices[item]
-
+        for item, count in basket.items():
+            if item not in prices:
+                item_total  = 0
+            if item in offers:
+                for offer_qty, offer_price in offers[item]:
+                    offer_count = count //offer_qty
+                    item_total += offer_count * offer_price
+                    count %= offer_qty
+                item_total += count * prices[item]
+                total += item_total
 
 
         return total
+
 
 
 
