@@ -32,16 +32,16 @@ class CheckoutSolution:
 
         ]
 
+
+        if not isinstance(skus,str) or not all(char in prices for char in skus):
+            return -1
+
         group_offer_items = [ 'S', 'T', 'X', 'Y', 'Z']
         group_offer_price = 45
         group_offer_count = 3
 
         basket = Counter(skus)
 
-
-
-        if not all(char in prices for char in skus):
-            return -1
 
         #applu free item
         for trigger, qty, free_item in free_offers:
@@ -51,6 +51,9 @@ class CheckoutSolution:
 
 
         total = 0
+
+
+
         group_counts = []
 
         # group[ discount
@@ -67,8 +70,6 @@ class CheckoutSolution:
                 removed = group_counts.pop(0)
                 basket[removed] -= 1
 
-        for item in group_counts:
-            total += prices[item]
 
         # remaining items in group not covered
         # for item, qty in counts.items():
@@ -87,11 +88,14 @@ class CheckoutSolution:
                     offer_count = count //offer_qty
                     item_total += offer_count * offer_price
                     count %= offer_qty
-                item_total += count * prices[item]
-                total += item_total
+
+                    
+            item_total += count * prices[item]
+            total += item_total
 
 
         return total
+
 
 
 
