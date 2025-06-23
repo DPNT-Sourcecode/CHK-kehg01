@@ -35,6 +35,7 @@ class CheckoutSolution:
         group_offer_items = [ 'S', 'T', 'X', 'Y', 'Z']
         group_offer_price = 45
         group_offer_count = 3
+        group_counts = []
 
 
 
@@ -46,6 +47,24 @@ class CheckoutSolution:
         total = 0
         counts = Counter(skus)
 
+        # group[ discount
+
+        for item in group_offer_items:
+            group_counts += [item] * counts.get(item, 0)
+            counts[item] = 0
+
+        group_counts.sort(key=lambda x: prices[x], reverse=True)
+
+        while len(group_counts) >= group_offer_count:
+            total += group_offer_price
+            group_counts = group_counts[group_offer_count:]
+
+        for item in group_counts:
+            total += prices[item]
+
+        # remaining items in group not covered
+        # for item, qty in counts.items():
+        # total += qty * prices[item]
 
         #apply free item offers
         for trigger, required, free_item in free_offers:
@@ -58,21 +77,7 @@ class CheckoutSolution:
                         counts[free_item] = max(0, counts[free_item] - free_qty)
 
 
-        #group[ discount
-        group_counts = []
-        for item in group_offer_items:
-            group_counts.extend([item] * counts[item])
-            counts[item] = 0
-
-        group_counts.sort(key=lambda x: prices[x], reverse=True)
-        while len(group_counts) >= group_offer_count:
-            total += group_offer_price
-            for _ in range(group_offer_count):
-                group_counts.pop(0)
-
-        #remaining items in group not covered
-        for item, qty in counts.items():
-            total+= qty * prices[item]
+       
 
         #apply multi buy offers
         for item, deals in offers.items():
@@ -83,12 +88,15 @@ class CheckoutSolution:
                     total+= deal_count * deal_price
                     qty %= deal_qty
                 total += qty * prices[item]
-                counts[item] = 0
-
+                counts[item] = qty
+        # remiaing items
+        for item, qty in counts.items():
+            total += qty * prices[item]
 
 
 
         return total
+
 
 
 
