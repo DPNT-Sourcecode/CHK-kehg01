@@ -52,7 +52,7 @@ class CheckoutSolution:
         for item in group_offer_items:
             qty = counts.get(item, 0)
             group_counts.extend([item] *qty)
-           counts[item] = 0
+            counts[item] = 0
 
         group_counts.sort(key=lambda x: prices[x], reverse=True)
 
@@ -97,6 +97,7 @@ class CheckoutSolution:
 
 
         return total
+
 
 
 
