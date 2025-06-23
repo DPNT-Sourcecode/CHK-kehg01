@@ -80,7 +80,8 @@ class CheckoutSolution:
         #apply multi buy offers
         for item, count in basket.items():
             if item not in prices:
-                item_total  = 0
+                return -1
+            item_total  = 0
             if item in offers:
                 for offer_qty, offer_price in offers[item]:
                     offer_count = count //offer_qty
@@ -91,6 +92,7 @@ class CheckoutSolution:
 
 
         return total
+
 
 
 
