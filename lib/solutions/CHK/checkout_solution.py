@@ -64,7 +64,7 @@ class CheckoutSolution:
             group_counts.extend([item] * counts[item])
             counts[item] = 0
 
-        group_counts.sort(keys=lambda  x:prices[x], reverse=True)
+        group_counts.sort(key=lambda x:prices[x], reverse=True)
         while len(group_counts) >= group_offer_count:
             total += group_offer_price
             for _ in range(group_offer_count):
@@ -89,6 +89,7 @@ class CheckoutSolution:
 
 
         return total
+
 
 
 
