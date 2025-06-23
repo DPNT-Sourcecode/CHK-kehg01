@@ -64,15 +64,15 @@ class CheckoutSolution:
             group_counts.extend([item] * counts[item])
             counts[item] = 0
 
-        group_counts.sort(key=lambda x:prices[x], reverse=True)
+        group_counts.sort(key=lambda x: prices[x], reverse=True)
         while len(group_counts) >= group_offer_count:
             total += group_offer_price
             for _ in range(group_offer_count):
                 group_counts.pop(0)
 
         #remaining items in group not covered
-        for item in group_counts:
-            total+= prices[item]
+        for item, qty in counts.items():
+            total+= qty * prices[item]
 
         #apply multi buy offers
         for item, deals in offers.items():
@@ -89,9 +89,6 @@ class CheckoutSolution:
 
 
         return total
-
-
-
 
 
 
