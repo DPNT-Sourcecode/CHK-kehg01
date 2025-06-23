@@ -9,7 +9,9 @@ class CheckoutSolution:
             'B' : 30,
             'C' : 20,
             'D' : 15,
-            'E' : 40 #2E get one B for free
+            'E' : 40, #2E get one B for free,
+            'F' : 10
+
         }
 
         offers = {
@@ -31,6 +33,13 @@ class CheckoutSolution:
             free_b = counts['E'] // 2
             counts['B'] = max(0, counts['B'] - free_b)
 
+        if 'F' in counts:
+            f_count = counts['F']
+            payable_f = f_count - (f_count // 3)
+            total += payable_f * prices['F']
+            counts['F'] = 0
+
+
         if 'A' in counts:
             a_count = counts['A']
             num_5A = a_count // 5
@@ -48,6 +57,7 @@ class CheckoutSolution:
             total += counts[item] * prices[item]
 
         return total
+
 
 
 
