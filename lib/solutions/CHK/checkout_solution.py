@@ -10,15 +10,51 @@ class CheckoutSolution:
             'C' : 20,
             'D' : 15,
             'E' : 40, #2E get one B for free,
-            'F' : 10
+            'F' : 10,
+            'G' :  20,
+            'H' : 10,
+        'I' : 35 ,
+        'J ' : 60 ,
+        'K ' : 80 ,
+        'L ' : 90,
+        'M' : 15 ,
+        'N' : 40 ,
+        'O' : 10 ,
+        'P'  :50,
+        'Q ' : 30 ,
+        'R ' : 50 ,
+        ' S ' : 30 ,
+        'T' : 20 ,
+        'U' : 40 ,
+        'V' : 50 ,
+         'W': 20 ,
+        'X': 90 ,
+        'Y': 10 ,
+        'Z': 50
 
         }
 
         offers = {
-            'A' : (3, 130), #3A for 130
-            'B' : (2,45) # 2B for 45
+            'A' : [(5, 200), (3,130)],
+            'B' : [(2,45)],
+            'H' : [(10,80), (5,45)],
+            'K' : [(2,120)],
+            'P' : [(5,200)],
+            'Q' : [(3,80)],
+            'V' : [(3,130), (2,90)]
 
         }
+
+        free_offers = [
+            ('E',2,'B'),
+            ('F',3,'F'),
+            ('N', 3, 'M'),
+            ('R', 3, 'Q'),
+            ('U', 4, 'U'),
+
+        ]
+
+
 
         if not all(char in prices for char in skus):
             return -1
@@ -29,34 +65,36 @@ class CheckoutSolution:
         counts = Counter(skus)
 
 
-        if 'E' in counts and 'B' in counts:
-            free_b = counts['E'] // 2
-            counts['B'] = max(0, counts['B'] - free_b)
+        #apply free item offers
+        for trigger, required, free_item in free_offers:
+            if trigger in counts:
+                free_qty = counts[trigger] // required
+                if free_item in counts:
+                    if trigger == free_item:
+                        counts[free_item] -= free_qty
+                    else:
+                        counts[free_item] = max(0, counts[free_item] - free_qty)
 
-        if 'F' in counts:
-            f_count = counts['F']
-            payable_f = f_count - (f_count // 3)
-            total += payable_f * prices['F']
-            counts['F'] = 0
+        #apply multi buy offers
+        for item, deals in offers.items():
+            if item in counts:
+                qty = counts[item]
+                for deal_qty, deal_price in deals:
+                    deal_count = qty //deal_qty
+                    total+= deal_count * deal_price
+                    qty %= deal_qty
+                total += qty * prices[item]
+                counts[item] = 0
 
 
-        if 'A' in counts:
-            a_count = counts['A']
-            num_5A = a_count // 5
-            rem_after_5A = a_count % 5
-            num_3A = rem_after_5A // 3
-            rem_after_3A = rem_after_5A % 3
-            total += num_5A * 200 + num_3A * 130 + rem_after_3A * prices['A']
-            counts['A'] = 0
+        #add reamining items at full price 
+        for item, qty in counts.items():
+            total += qty * prices[item]
 
-        if 'B' in counts:
-            b_count = counts['B']
-            total += (b_count // 2) * 45 + (b_count % 2) * prices['B']
-
-        for item in['C','D','E']:
-            total += counts[item] * prices[item]
 
         return total
+
+
 
 
 
