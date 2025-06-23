@@ -14,7 +14,7 @@ class CheckoutSolution:
             'A' : [(5, 200), (3,130)],
             'B' : [(2,45)],
             'H' : [(10,80), (5,45)],
-            'K' : [(2,120)],
+            'K' : [(2,150)],
             'P' : [(5,200)],
             'Q' : [(3,80)],
             'V' : [(3,130), (2,90)]
@@ -26,7 +26,7 @@ class CheckoutSolution:
             ('F',3,'F'),
             ('N', 3, 'M'),
             ('R', 3, 'Q'),
-            ('U', 4, 'U'),
+            ('U', 4, 'U')
 
         ]
 
@@ -68,6 +68,7 @@ class CheckoutSolution:
             total += qty * prices[item]
 
         return total
+
 
 
 
