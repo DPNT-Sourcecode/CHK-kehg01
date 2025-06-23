@@ -45,8 +45,14 @@ class CheckoutSolution:
 
         #applu free item
         for trigger, qty, free_item in free_offers:
-            eligible = basket[trigger] //qty
-            basket[free_item] = max(0, basket[free_item] - eligible)
+            if trigger == free_item:
+                total_count = basket[trigger]
+                group_size = qty +1
+                free_count = total_count // group_size
+                basket[trigger] = total_count - free_count
+            else:
+                eligible = basket[trigger] //qty
+                basket[free_item] = max(0, basket[free_item] - eligible)
 
 
 
@@ -89,15 +95,12 @@ class CheckoutSolution:
                     item_total += offer_count * offer_price
                     count %= offer_qty
 
-                    
+
             item_total += count * prices[item]
             total += item_total
 
 
         return total
-
-
-
 
 
 
