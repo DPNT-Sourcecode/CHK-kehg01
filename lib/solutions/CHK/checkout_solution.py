@@ -50,14 +50,16 @@ class CheckoutSolution:
         # group[ discount
 
         for item in group_offer_items:
-            group_counts += [item] * counts.get(item, 0)
-            counts[item] = 0
+            qty = counts.get(item, 0)
+            group_counts.extend([item] *qty)
+           counts[item] = 0
 
         group_counts.sort(key=lambda x: prices[x], reverse=True)
 
         while len(group_counts) >= group_offer_count:
             total += group_offer_price
-            group_counts = group_counts[group_offer_count:]
+            for _ in range(group_offer_count):
+                group_counts.pop(0)
 
         for item in group_counts:
             total += prices[item]
@@ -77,7 +79,7 @@ class CheckoutSolution:
                         counts[free_item] = max(0, counts[free_item] - free_qty)
 
 
-       
+
 
         #apply multi buy offers
         for item, deals in offers.items():
@@ -87,7 +89,6 @@ class CheckoutSolution:
                     deal_count = qty //deal_qty
                     total+= deal_count * deal_price
                     qty %= deal_qty
-                total += qty * prices[item]
                 counts[item] = qty
         # remiaing items
         for item, qty in counts.items():
@@ -96,6 +97,7 @@ class CheckoutSolution:
 
 
         return total
+
 
 
 
