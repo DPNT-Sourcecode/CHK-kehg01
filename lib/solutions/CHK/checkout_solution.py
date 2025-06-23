@@ -3,7 +3,7 @@ from collections import Counter
 class CheckoutSolution:
 
     # skus = unicode string
-    def checkout( skus):
+    def checkout(self, skus):
         prices = {
             'A' : 50,
             'B' : 30,
@@ -48,6 +48,7 @@ class CheckoutSolution:
             total += counts[item] * prices[item]
 
         return total
+
 
 
 
