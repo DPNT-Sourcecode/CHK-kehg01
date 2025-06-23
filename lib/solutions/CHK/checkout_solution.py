@@ -13,24 +13,24 @@ class CheckoutSolution:
             'F' : 10,
             'G' :  20,
             'H' : 10,
-        'I' : 35 ,
-        'J ' : 60 ,
-        'K ' : 80 ,
-        'L ' : 90,
-        'M' : 15 ,
-        'N' : 40 ,
-        'O' : 10 ,
-        'P'  :50,
-        'Q ' : 30 ,
-        'R ' : 50 ,
-        ' S ' : 30 ,
-        'T' : 20 ,
-        'U' : 40 ,
-        'V' : 50 ,
-         'W': 20 ,
-        'X': 90 ,
-        'Y': 10 ,
-        'Z': 50
+            'I' : 35 ,
+            'J ' : 60 ,
+            'K ' : 80 ,
+            'L ' : 90,
+            'M' : 15 ,
+            'N' : 40 ,
+            'O' : 10 ,
+            'P'  :50,
+            'Q ' : 30 ,
+             'R ' : 50 ,
+            ' S ' : 30 ,
+            'T' : 20 ,
+            'U' : 40 ,
+            'V' : 50 ,
+             'W': 20 ,
+            'X': 90 ,
+            'Y': 10 ,
+            'Z': 50
 
         }
 
@@ -87,12 +87,14 @@ class CheckoutSolution:
                 counts[item] = 0
 
 
-        #add reamining items at full price 
+        #add reamining items at full price
         for item, qty in counts.items():
             total += qty * prices[item]
 
-
         return total
+
+
+
 
 
 
